@@ -1,8 +1,11 @@
 package com.caique.spring_crud.controller;
 
+// import com.caique.spring_crud.dtos.EnderecoDTO;
 import com.caique.spring_crud.dtos.PessoaDTO;
+import com.caique.spring_crud.mapping.PessoaMapper;
 import com.caique.spring_crud.model.Pessoa;
-import com.caique.spring_crud.repository.PessoaRepository;
+import com.caique.spring_crud.service.PessoaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,30 +18,38 @@ import java.util.List;
 public class PessoaController {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
 
+    @Autowired
+    private PessoaMapper pessoaMapper;
+
+    // Endpoint para listar todas as pessoas
     @GetMapping
-    public List<Pessoa> listarPessoas() {
-        return pessoaRepository.findAll();
+    public ResponseEntity<List<PessoaDTO>> listarPessoas() {
+        List<Pessoa> pessoas = pessoaService.getAllPessoas();
+        List<PessoaDTO> pessoasDTO = pessoaMapper.toDtoList(pessoas);
+        return new ResponseEntity<>(pessoasDTO, HttpStatus.OK);
     }
 
+    // Endpoint para cadastrar uma nova pessoa
     @PostMapping("/cadastrar-pessoa")
-    public ResponseEntity<Pessoa> cadastrarPessoa(@RequestBody(required = true) PessoaDTO pessoa) {
-        //Pessoa novaPessoa = pessoaRepository.save(pessoa);
-        System.out.println("Teste");
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+    public ResponseEntity<PessoaDTO> cadastrarPessoa(@RequestBody PessoaDTO pessoaDTO) {
+        Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
+        Pessoa novaPessoa = pessoaService.savePessoa(pessoa);
+        PessoaDTO novaPessoaDTO = pessoaMapper.toDto(novaPessoa);
+        return new ResponseEntity<>(novaPessoaDTO, HttpStatus.CREATED);
     }
 
+    // Endpoint para login de uma pessoa
     @PostMapping("/login")
-    public ResponseEntity<Pessoa> login(@RequestBody Pessoa loginRequest) {
-    Pessoa pessoa = pessoaRepository.findByEmail(loginRequest.getEmail());
+    public ResponseEntity<PessoaDTO> login(@RequestBody PessoaDTO loginRequest) {
+        Pessoa pessoa = pessoaService.findByEmail(loginRequest.getEmail());
 
-    if (pessoa != null && pessoa.getSenha().equals(loginRequest.getSenha())) {
-        // Login bem-sucedido
-        return new ResponseEntity<>(pessoa, HttpStatus.OK);
-    } else {
-        // Credenciais inválidas
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (pessoa != null && pessoa.getSenha().equals(loginRequest.getSenha())) {
+            PessoaDTO pessoaDTO = pessoaMapper.toDto(pessoa);
+            return new ResponseEntity<>(pessoaDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
-}
 }
