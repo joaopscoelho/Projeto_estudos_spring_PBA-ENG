@@ -3,10 +3,14 @@ package com.caique.spring_crud.dtos;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PessoaDTO {
 
 
@@ -17,6 +21,8 @@ public class PessoaDTO {
     private String senha;
     private LocalDate dataNascimento; // Data de nascimento da pessoa
     private List<EnderecoDTO> endereco;
+
+    
 }
 
 

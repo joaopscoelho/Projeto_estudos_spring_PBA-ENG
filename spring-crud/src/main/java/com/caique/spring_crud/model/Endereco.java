@@ -1,12 +1,15 @@
 package com.caique.spring_crud.model;
 
-// import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-import jakarta.persistence.ManyToOne;
+// import jakarta.persistence.CascadeType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,10 +30,9 @@ public class Endereco {
     private String cidade;
     private String estado;
     private String cep;
-
     // Associação com Pessoa
-    @ManyToOne
-    private Pessoa pessoa;
+     @ManyToOne (cascade =  CascadeType.ALL, fetch = FetchType.LAZY)
+     private Pessoa pessoa;
 }
 
 

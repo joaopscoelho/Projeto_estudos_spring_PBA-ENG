@@ -1,8 +1,14 @@
 package com.caique.spring_crud.dtos;
 
+import java.math.BigInteger;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EnderecoDTO {
 
     private Long id; // ID único do endereço
