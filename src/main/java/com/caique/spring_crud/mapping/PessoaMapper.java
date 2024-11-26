@@ -3,7 +3,9 @@ package com.caique.spring_crud.mapping;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 
+import com.caique.spring_crud.dtos.EnderecoDTO;
 import com.caique.spring_crud.dtos.PessoaDTO;
+import com.caique.spring_crud.model.Endereco;
 import com.caique.spring_crud.model.Pessoa;
 
 
@@ -15,6 +17,12 @@ public interface PessoaMapper {
 
     @InheritInverseConfiguration
     PessoaDTO toPessoaDTO(Pessoa entidade);
+    
+    
+    Endereco mapEndereco(EnderecoDTO dto);
+    
+    @InheritInverseConfiguration
+    EnderecoDTO toEnderecoDTO(Endereco entity);
     
     // Mapeamento de listas
 //    List<Pessoa> mapPessoas(List<PessoaDTO> dtos);

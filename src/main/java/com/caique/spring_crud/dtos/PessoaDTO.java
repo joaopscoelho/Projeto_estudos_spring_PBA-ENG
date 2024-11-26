@@ -18,7 +18,7 @@ public class PessoaDTO {
     private String nome; // Nome da pessoa
     private String email; // Email da pessoa
     private String cpf; // CPF da pessoa
-    private String senha;
+//    private String senha;
     private LocalDate dataNascimento; // Data de nascimento da pessoa
     private List<EnderecoDTO> endereco;
 

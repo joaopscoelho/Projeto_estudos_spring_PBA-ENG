@@ -22,16 +22,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Pessoa {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // ID único para cada pessoa
     private String nome; // Nome da pessoa
     private String email; // Email da pessoa
     private String cpf; // CPF da pessoa
-    private String senha;
+//    private String senha;
     private LocalDate dataNascimento; // Data de nascimento da pessoa
     // Relacionamento com a classe Endereco
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // Associação com Endereco
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER) // Associação com Endereco
+    
     private List<Endereco> endereco = new ArrayList<>();
 }
 

@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.caique.spring_crud.dtos.EnderecoDTO;
 import com.caique.spring_crud.dtos.PessoaDTO;
 import com.caique.spring_crud.mapping.PessoaMapper;
+import com.caique.spring_crud.model.Endereco;
 import com.caique.spring_crud.model.Pessoa;
+import com.caique.spring_crud.repository.EnderecoRepository;
 import com.caique.spring_crud.repository.PessoaRepository;
 
 @Service
@@ -17,6 +20,8 @@ public class PessoaService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private PessoaMapper mapper;
 
@@ -43,7 +48,13 @@ public class PessoaService {
 
 	
 	public List<PessoaDTO> listarPessoas() {
-		return pessoaRepository.findAll().stream().map(x -> this.mapper.toPessoaDTO(x)).collect(Collectors.toList());
+		List<PessoaDTO> pessoas = pessoaRepository.findAll().stream().map(x -> this.mapper.toPessoaDTO(x)).collect(Collectors.toList());
+		return pessoas;
+	}
+	
+	public List<PessoaDTO> pesquisarPessoas() {
+		List<PessoaDTO> pessoas = pessoaRepository.findAll().stream().map(x -> this.mapper.toPessoaDTO(x)).collect(Collectors.toList());
+		return pessoas;
 	}
 
 	public Optional<?> deletar(Long id) throws Throwable {
@@ -66,6 +77,36 @@ public class PessoaService {
 	
 	public Pessoa findByEmail(String email) {
 		return pessoaRepository.findByEmail(email);
+	}
+	
+	
+	// ***************************************************************************//
+	
+	public Optional<?> cadastrarEndereco(EnderecoDTO dto) throws Throwable {
+		try {
+//			Endereco novoEndereco = this.mapper.mapEndereco(dto);
+//			novoEndereco.setPessoa(this.pessoaRepository.findById(dto.getPessoa().getId()).get());
+			
+			return Optional.of(this.mapper.toEnderecoDTO(this.enderecoRepository.save(mapper.mapEndereco(dto))));
+			
+		} catch (Exception e) {
+			throw new Throwable(e);
+		}
+	}
+	
+	public Optional<?> editarEndereco(EnderecoDTO dto) throws Throwable {
+		return Optional.of(this.mapper.toEnderecoDTO(this.enderecoRepository.save(this.mapper.mapEndereco(dto)))) ;
+	}
+	
+	public Optional<?> listarEnderecoPorUsuario(Long id) throws Throwable {
+		try {
+			Pessoa pessoa = this.pessoaRepository.findById(id).get();
+			return Optional.of(this.enderecoRepository.findByPessoa(pessoa)
+					.stream().map(x -> this.mapper.toEnderecoDTO(x)).collect(Collectors.toList())) ;
+		} catch (Exception e) {
+			throw new Throwable(e);
+		}
+		
 	}
 
 

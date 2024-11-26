@@ -1,5 +1,7 @@
 package com.caique.spring_crud.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,9 +22,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Endereco {
+public class Endereco implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Para auto-gerar o ID do endereço
     private Long id;
     private String rua;
@@ -31,7 +35,8 @@ public class Endereco {
     private String estado;
     private String cep;
     // Associação com Pessoa
-     @ManyToOne (cascade =  CascadeType.ALL, fetch = FetchType.LAZY)
+    
+     @ManyToOne (fetch = FetchType.LAZY)
      private Pessoa pessoa;
 }
 
