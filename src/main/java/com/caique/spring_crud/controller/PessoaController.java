@@ -99,6 +99,12 @@ public class PessoaController {
 	}
 	
 	@CrossOrigin
+	@DeleteMapping("endereco/deletar/{id}")
+	public ResponseEntity<?> deletarEndereco(@PathVariable (required = true) Long id) throws Throwable {
+		return ResponseEntity.ok(this.pessoaService.delatarEndereco(id)) ;
+	}
+	
+	@CrossOrigin
 	@GetMapping("endereco/listar-por-usuario/{id}")
 	public ResponseEntity<?> listarEnderecoPorUsuario(@PathVariable(required = true) Long id) throws Throwable {
 		return ResponseEntity.ok(this.pessoaService.listarEnderecoPorUsuario(id)) ;

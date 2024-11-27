@@ -108,6 +108,16 @@ public class PessoaService {
 		}
 		
 	}
+	
+	public Optional<?> delatarEndereco(Long id) throws Throwable {
+		try {
+			this.enderecoRepository.deleteById(id);
+			return Optional.empty();
+		} catch (Exception e) {
+			throw new Throwable(e);
+		}
+		
+	}
 
 
 }
